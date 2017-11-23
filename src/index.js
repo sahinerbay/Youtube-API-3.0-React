@@ -1,15 +1,33 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import YTSearch from 'youtube-api-search';
+
 import SearchBar from './components/search_bar';
+import VideoList from './components/video_list';
 
 const API_KEY = 'AIzaSyDgmBCopkIf8l5Jjnavj2XtilYmdCp17DE';
 
-// Create a new component. This component should produce some HTML
-// App is a Component / Class and we can have many instances of an App Class
+
+
 class App extends Component {
-    render() {
-        return <div><SearchBar /></div>;
-    }
+	constructor(props) {
+		super(props);
+
+		this.state = { videos: [] };
+
+		YTSearch({ key: API_KEY, term: 'surfboards' }, videos => {
+			this.setState({ videos });
+		});
+	}
+
+	render() {
+		return (
+			<div>
+				<SearchBar />
+				<VideoList videos = {this.state.videos} />
+			</div>
+		);
+	}
 }
 
 // <App /> is an instance of App Component / Class
